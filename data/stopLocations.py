@@ -1,11 +1,13 @@
 from geopy.geocoders import Nominatim
 import json
 
+
 def load_json():
     with open('data/stop-names.json', 'r') as json_file:
         params = json.load(json_file)
 
     return params['stopNames']
+
 
 def get_lat_lon(names):
     coords = {name:[] for name in names}

@@ -20,7 +20,20 @@
 - Axel
     - Bus stop / connections
         - Bus stops from stops.json
+        - Name
+        - Position
+        - List of passengers
+        - Method to add/remove passengers to list
+  
 - Nisse
     - Passenger
+        - start of bus ride
+        - destination
+        - waiting time
+        - time of jumping on bus
+        - time of arrival at destination
+        
 - Joel
     - Window
+        - visualize as circle
+    

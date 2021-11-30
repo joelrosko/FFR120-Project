@@ -1,3 +1,3 @@
 class BusStop:
     def __init__(self):
-        pass
+        self.waiting_list = []

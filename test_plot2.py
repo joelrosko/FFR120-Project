@@ -59,17 +59,33 @@ stop._set_facecolor('g')    # Change color of existing stop
 stop._set_edgecolor('g')
 
 # Plot bus
-bus = plt.Rectangle((25+0.1, 15-0.15), 0.1, 0.5, color='b')
+bus = plt.Rectangle((25+0.1, 15-0.15), 0.2, 0.5, color='b')
 ax.add_patch(bus)
 
 ax.set_xlim(0,30)
 ax.set_ylim(0,30)
 ax.axis('off')
+'''
 for i, (x,y) in enumerate(stop_pos):
     beta = sum(pr_steps[:i])*180
     bus.set_angle(beta)
     bus.set_xy((x,y))
     plt.pause(1)
-
+'''
+beta = 0
+omega = np.pi/(48*60)
+x0 = 15
+y0 = 15
+x = 25
+y = 15
+r = 10
+for minutes in range(1,49):
+    for secondes in range(60):
+        beta += omega
+        x = x0 + r*np.cos(beta)
+        y = y0 + r*np.sin(beta)
+        bus.set_angle(beta*180/np.pi)
+        bus.set_xy((x,y))
+        plt.pause(0.0001)
 #plt.savefig('figures/first_circle_plot.png')
 plt.show()

@@ -25,11 +25,11 @@ class Window:
     def add_bus(self, start_angle):
         x = self.x0 + self.r*np.cos(start_angle)
         y = self.y0 + self.r*np.sin(start_angle)
-        self.buses.append(plt.Rectangle((x, y), 0.1, 0.5, start_angle, color='b'))
+        self.buses.append(plt.Rectangle((x, y), 0.1, 0.5, start_angle*180/np.pi, color='b'))
         self.ax.add_patch(self.buses[-1])
     
     def move_bus(self, n_bus, new_angle):
         x = self.x0 + self.r*np.cos(new_angle)
         y = self.y0 + self.r*np.sin(new_angle)
-        self.buses[n_bus].set_angle(new_angle)
+        self.buses[n_bus].set_angle(new_angle*180/np.pi)
         self.buses[n_bus].set_xy((x, y))

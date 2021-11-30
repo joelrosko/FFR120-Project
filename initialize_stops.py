@@ -14,22 +14,22 @@ def initialize_stoplist():
     names = load_json('data/stops.json').keys()
     times = load_json('data/travel_time.json')
     times = times["times"]
-    times.insert(0,0)
-    print(times)
-    stoplist = []
+    times.insert(0, 0)
 
-    angle_1min = np.pi/(48)
+    stop_list = []
+    angle_1min = np.pi/48
     tmptime = 0
-    for id, name in enumerate(names):
-        tmptime += times[id]
+
+    for id1, name in enumerate(names):
+        tmptime += times[id1]
         pos = angle_1min*tmptime
-        stoplist.append(BusStop(name + " norrgående", pos, id))
+        stop_list.append(BusStop(f"{name} norrgående", pos, id1))
 
-    for id, name in enumerate(reversed(names)):
-        tmptime += times[-id]
+    for id2, name in enumerate(reversed(names)):
+        tmptime += times[-id2]
         pos = angle_1min * tmptime
-        stoplist.append(BusStop(name + " södergående", pos, id+22))
+        stop_list.append(BusStop(f"{name} södergående", pos, id2 + 22))
 
-    return stoplist
+    return stop_list
 
 

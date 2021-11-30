@@ -1,5 +1,11 @@
 # FFR120
 
+### Project plan
+- Project scheme
+- Git start up
+- Assigned classes
+- Report 
+
 ### Classes
 - Alex
     - Bus

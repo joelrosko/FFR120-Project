@@ -36,25 +36,25 @@ class BusStop:
 
 
 # Tests:
-valand = BusStop("Valand", np.pi/2, 1337)
-print(valand)
-
-hej = load_json()
-
-stoplist = []
-for id, key in enumerate(hej.keys()):
-    stoplist.append(BusStop(key, id*np.pi/(30), id))
-
-for bstop in stoplist:
-    bstop.add_passenger(1)
-    bstop.add_passenger(2)
-
-print(stoplist)
-
-bus = []
-for id, bstop in enumerate(stoplist):
-    bus.append(bstop.board_passenger(id))
-
-
-print(stoplist)
-print(bus)
+# valand = BusStop("Valand", np.pi/2, 1337)
+# print(valand)
+#
+# hej = load_json()
+#
+# stoplist = []
+# for id, key in enumerate(hej.keys()):
+#     stoplist.append(BusStop(key, id*np.pi/(30), id))
+#
+# for bstop in stoplist:
+#     bstop.add_passenger(1)
+#     bstop.add_passenger(2)
+#
+# print(stoplist)
+#
+# bus = []
+# for id, bstop in enumerate(stoplist):
+#     bus.append(bstop.board_passenger(id))
+#
+#
+# print(stoplist)
+# print(bus)

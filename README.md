@@ -1,8 +1,8 @@
 # FFR120
 
 ### Project plan
-- Project scheme
-- Git start up :)
+- Project scheme &check;
+- Git start up :) &check;
 - Assigned classes
 - Report 
 

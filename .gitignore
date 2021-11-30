@@ -1,5 +1,10 @@
 /venv
 /data/stop-names.json
 test_plot.py
+<<<<<<< HEAD
 test_plot2.py
 .DS_Store
+=======
+.DS_Store
+hej.py
+>>>>>>> e1be8d8be32c54e5f7affbc485fab33469cfdede

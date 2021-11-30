@@ -10,8 +10,11 @@ class Bus:
     def get_position(self):
         return self.position
     
-    def add_passengers(self):
-        pass
+    def add_passengers(self, n_add):
+        if self.n_passengers < self.max_passenger:
+            self.n_passengers += n_add
 
-    def lose_passengers(self):
-        pass
+    def lose_passengers(self, n_remove):
+        if self.n_passengers > 0:
+            self.n_passengers -= n_remove
+

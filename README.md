@@ -2,7 +2,7 @@
 
 ### Project plan
 - Project scheme
-- Git start up
+- Git start up :)
 - Assigned classes
 - Report 
 

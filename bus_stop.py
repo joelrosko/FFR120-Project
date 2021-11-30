@@ -57,5 +57,6 @@ bus = []
 for id, stop in enumerate(stoplist):
     bus.append(stop.board_passenger(id))
 
+
 print(stoplist)
 print(bus)

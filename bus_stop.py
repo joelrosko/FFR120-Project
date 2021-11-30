@@ -3,8 +3,6 @@ import passenger
 import numpy as np
 
 
-hej2 = passenger.Passenger("hej", "hej igen")
-
 def load_json():
     with open('data/stops.json', 'r') as json_file:
         params = json.load(json_file)
@@ -21,11 +19,11 @@ class BusStop:
         self.index = index
 
     def __repr__(self):
-        return f'Bus stop "{self.name}":\n Waiting: {self.waiting_list}\n'
+        return f'Bus stop [{self.index}] "{self.name}" at pos: {self.position}:\n Waiting: {self.waiting_list}\n'
 
-    def add_passenger(self):
-        # TODO should create a passenger instance at the stop. (destination, time of arrival)
-        self.waiting_list.append("Testman")  # Temporary testman string instead of Passenger
+    def add_passenger(self, current_time):
+        # TODO should create a passenger instance at the stop. (time of arrival)
+        self.waiting_list.append(passenger.Passenger(current_time, self.index))  # Temporary testman string instead of Passenger
 
     def board_passenger(self, current_time):
         # TODO return a passenger to be boarded, maybe the one who waited the longest
@@ -47,15 +45,15 @@ stoplist = []
 for id, key in enumerate(hej.keys()):
     stoplist.append(BusStop(key, id*np.pi/(30), id))
 
-for stop in stoplist:
-    stop.add_passenger()
-    stop.add_passenger()
+for bstop in stoplist:
+    bstop.add_passenger(1)
+    bstop.add_passenger(2)
 
 print(stoplist)
 
 bus = []
-for id, stop in enumerate(stoplist):
-    bus.append(stop.board_passenger(id))
+for id, bstop in enumerate(stoplist):
+    bus.append(bstop.board_passenger(id))
 
 
 print(stoplist)

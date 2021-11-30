@@ -11,7 +11,7 @@ class Bus:
         return self.position
     
     def add_passengers(self):
-        pass
+        self.n_passengers += 1
 
     def lose_passengers(self):
-        pass
+        self.n_passengers -= 1

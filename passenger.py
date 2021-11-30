@@ -26,6 +26,3 @@ class Passenger:
 
     def travel_time(self, curr_time):
         self.traveling_time = curr_time - self.start_time
-
-
-p1 = Passenger(10, 1)

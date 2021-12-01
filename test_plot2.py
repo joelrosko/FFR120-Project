@@ -79,7 +79,7 @@ y0 = 15
 x = 25
 y = 15
 r = 10
-for minutes in range(1,49):
+for minutes in range(1,48*10):
     for secondes in range(60):
         beta += omega
         x = x0 + r*np.cos(beta)

@@ -1,6 +1,7 @@
 # Run simulation
 import matplotlib.pyplot as plt
 import numpy as np
+import json
 
 import initialize_stops
 from simulation_window import Window
@@ -9,10 +10,16 @@ from bus import Bus
 n_buses = 2
 delay_time = []
 
-def simulation(bstoplist, buses, window):
+def load_json():
+    with open('data/travel_time.json', 'r') as json_file:
+        tmp_travel_times = json.load(json_file)
+
+    return tmp_travel_times['times']
+
+def simulation(bstoplist, buses, window, travel_times):
     for t in range(1000):
         for bus_stop in bstoplist:
-            bus_stop.create_passenger(t)
+            bus_stop.create_passenger(t, travel_times)
 
         for bus_idx, current_bus in enumerate(buses):
             at_stop, stop_idx = current_bus.bus_at_stop()
@@ -32,11 +39,14 @@ def simulation(bstoplist, buses, window):
         plt.pause(0.01)
 
 def main():
+    travel_times = load_json()
     bstoplist = initialize_stops.initialize_stoplist()
     window = Window(bstoplist)
     buses = [Bus(bstoplist, 0), Bus(bstoplist, 3.14)]
+    for bus in buses:
+        window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window)
+    simulation(bstoplist, buses, window, travel_times)
 
 if __name__ == '__main__':
     main()

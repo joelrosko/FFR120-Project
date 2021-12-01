@@ -22,8 +22,6 @@ class Bus:
         if (np.abs(self.stop_position[self.next_stop] - self.position)) < (self.angular_velocity/2):
             self.previous_stop = self.next_stop
             self.at_stop = True
-            self.next_stop += 1
-            self.next_stop = self.next_stop % len(self.stop_position)
         else:
             self.at_stop = False
 
@@ -31,6 +29,8 @@ class Bus:
 
     def boarding_complete(self):
         self.at_stop = False
+        self.next_stop += 1
+        self.next_stop = self.next_stop % len(self.stop_position)
 
     def move_bus(self):
         self.bus_at_stop()

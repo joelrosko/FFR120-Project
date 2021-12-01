@@ -8,7 +8,8 @@ class Window:
         self.y0 = 15
         self.r = 10
         self.buses = []
-        self.window_style(stops)
+        self.window_style()
+        self.init_window(stops)
     
     def window_style(self):
         self.ax.set_xlim(0,30)

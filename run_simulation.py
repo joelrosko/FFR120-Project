@@ -45,7 +45,11 @@ def main():
     travel_times = load_json()
     bstoplist = initialize_stops.initialize_stoplist()
     window = Window(bstoplist)
-    buses = [Bus(bstoplist, 0), Bus(bstoplist, 3.14)]
+    buses = []
+    bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
+    for pos in bus_pos:
+        buses.append(Bus(bstoplist, pos))
+
     for bus in buses:
         window.add_bus(bus.position)
 

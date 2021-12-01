@@ -26,11 +26,11 @@ def simulation(bstoplist, buses, window, travel_times):
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
                 if any(passenger_end_idx == stop_idx):
-                    passenger_idx = np.where(current_bus.passenger_list[:].end_index == stop_idx)
+                    passenger_idx = np.where(passenger_end_idx == stop_idx)
                     delay_time.append(current_bus.passenger_list[passenger_idx[0]].delay_time())
                     current_bus.remove_passenger(passenger_idx[0])
                 elif bstoplist[stop_idx].waiting_list != []:
-                    current_bus.add_passengers(t)
+                    current_bus.add_passengers(bstoplist[stop_idx], t)
                 else:
                     current_bus.boarding_complete()
             else:

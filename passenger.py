@@ -16,6 +16,7 @@ class Passenger:
         self.traveling_time = 0
         self.start_index = bus_stop_index
         if self.start_index < 21:
+            # under funkar inte, self.start_index + 1 kan va >= 21
             self.end_index = int(np.random.randint(self.start_index + 1, 21, 1))
             self.estimated_time = np.sum(travel_times[self.start_index - 1:self.end_index - 1])
         else:

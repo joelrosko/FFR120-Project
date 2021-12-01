@@ -40,10 +40,10 @@ class Bus:
     def n_free_seats(self):
         return self.max_passengers - self.n_passengers
     
-    def add_passengers(self, t):
+    def add_passengers(self, current_stop, t):
         if self.n_passengers < self.max_passengers:
             self.n_passengers += 1
-            self.passenger_list.append(BusStop.board_passenger(t))
+            self.passenger_list.append(current_stop.board_passenger(t))
         # passenger_list.append(BusStop.
 
     def remove_passengers(self, idx):

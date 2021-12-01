@@ -27,8 +27,8 @@ def simulation(bstoplist, buses, window, travel_times):
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
                 if any(passenger_end_idx == stop_idx):
                     passenger_idx = np.where(passenger_end_idx == stop_idx)
-                    delay_time.append(current_bus.passenger_list[passenger_idx[0]].delay_time())
-                    current_bus.remove_passenger(passenger_idx[0])
+                    delay_time.append(current_bus.passenger_list[passenger_idx[0][0]].delay_time())
+                    current_bus.remove_passenger(passenger_idx[0][0])
                 elif bstoplist[stop_idx].waiting_list != []:
                     current_bus.add_passengers(bstoplist[stop_idx], t)
                 else:
@@ -37,7 +37,7 @@ def simulation(bstoplist, buses, window, travel_times):
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
         
-        plt.pause(0.01)
+        plt.pause(0.001)
 
 def main():
     travel_times = load_json()

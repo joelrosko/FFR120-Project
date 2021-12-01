@@ -16,10 +16,10 @@ class Passenger:
         self.traveling_time = []
         self.start_index = bus_stop_index
         if self.start_index < 22:
-            self.end_index = int(np.random.randint(self.start_index+1, 23, 1))
+            self.end_index = int(np.random.randint(self.start_index+1, 22, 1))
             self.estimated_time = np.sum(travel_times[self.start_index - 1:self.end_index - 1])
         else:
-            self.end_index = int(np.random.randint(self.start_index + 1, 45, 1))
+            self.end_index = int(np.random.randint(self.start_index + 1, 44, 1))
             flipped_travel_times = travel_times[::-1]
             self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21)-1:(self.end_index % 21)-1])
 

@@ -3,7 +3,7 @@
 ### Project plan
 - Project scheme &check;
 - Git start up :) &check;
-- Assigned classes
+- Assigned classes &check;
 - Report 
 
 ### Classes

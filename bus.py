@@ -33,9 +33,9 @@ class Bus:
         self.next_stop = self.next_stop % len(self.stop_position)
 
     def move_bus(self):
-        self.bus_at_stop()
         if not self.at_stop:
             self.position += self.angular_velocity
+            self.position = self.position % (2*np.pi)
 
     def n_free_seats(self):
         return self.max_passengers - self.n_passengers
@@ -44,6 +44,8 @@ class Bus:
         if self.n_passengers < self.max_passengers:
             self.n_passengers += 1
             self.passenger_list.append(current_stop.board_passenger(t))
+        else:
+            self.boarding_complete()
         # passenger_list.append(BusStop.
 
     def remove_passenger(self, idx):

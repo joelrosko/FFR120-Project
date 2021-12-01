@@ -17,8 +17,13 @@ def load_json():
     return tmp_travel_times['times']
 
 def simulation(bstoplist, buses, window, travel_times):
+<<<<<<< HEAD
     for t in range(1000):
         for n_stop, bus_stop in enumerate(bstoplist):
+=======
+    for t in range(10000):
+        for bus_stop in bstoplist:
+>>>>>>> 030fad05d9b988f182318921dedf570535a96c5f
             bus_stop.create_passenger(t, travel_times)
             window.add_passengers(n_stop, len(bus_stop.waiting_list))
 

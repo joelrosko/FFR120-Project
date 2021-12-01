@@ -30,7 +30,7 @@ def simulation(bstoplist, buses, window, travel_times):
                     delay_time.append(current_bus.passenger_list[passenger_idx[0][0]].delay_time())
                     current_bus.remove_passenger(passenger_idx[0][0])
                 elif bstoplist[stop_idx].waiting_list != []:
-                    current_bus.add_passengers(bstoplist[stop_idx], t)
+                    current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     current_bus.boarding_complete()
             else:

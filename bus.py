@@ -40,13 +40,13 @@ class Bus:
     def n_free_seats(self):
         return self.max_passengers - self.n_passengers
     
-    def add_passengers(self, current_stop, t):
+    def add_passenger(self, current_stop, t):
         if self.n_passengers < self.max_passengers:
             self.n_passengers += 1
             self.passenger_list.append(current_stop.board_passenger(t))
         # passenger_list.append(BusStop.
 
-    def remove_passengers(self, idx):
+    def remove_passenger(self, idx):
         if self.n_passengers > 0:
             self.n_passengers -= 1
             self.passenger_list.pop(idx)
@@ -57,10 +57,10 @@ class Bus:
 
 if __name__ == '__main__':
 
-
-    stops = initialize_stoplist()
-    # BS_positions = [stops[i].position for i in range(len(stops))]
-    bus1 = Bus(stops, 1, 5)
+    print('hej')
+    # stops = initialize_stoplist()
+    # # BS_positions = [stops[i].position for i in range(len(stops))]
+    # bus1 = Bus(stops, 1, 5)
 
     # for i in range(100):
     #     bus1.add_passengers()

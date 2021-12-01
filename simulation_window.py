@@ -17,6 +17,8 @@ class Window:
         self.ax.axis('off')
     
     def init_window(self, stops):
+        circ = plt.Circle((15, 15), 10, color='grey', fill=False)
+        self.ax.add_patch(circ)
         for beta in stops:
             x = self.x0 + self.r*np.cos(beta.position)
             y = self.y0 + self.r*np.sin(beta.position)
@@ -35,5 +37,13 @@ class Window:
         self.buses[n_bus].set_angle(new_angle*180/np.pi)
         self.buses[n_bus].set_xy((x, y))
     
-    def add_passengers(self):
-        pass
+    def add_passengers(self, stop_idx, n_passengers):
+        if n_passengers == 0:
+            self.ax._set_facecolor('y')
+            self.ax._set_edgecolor('y')
+        elif n_passengers > 0 and n_passengers < 5:
+            self.ax._set_facecolor('k')
+            self.ax._set_edgecolor('k')
+        else:
+            self.ax._set_facecolor('r')
+            self.ax._set_edgecolor('r')

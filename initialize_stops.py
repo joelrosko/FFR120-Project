@@ -35,8 +35,13 @@ def initialize_stoplist():
         pos = angle_1min * tmptime
         stop_list.append(BusStop(f"{name} södergående", pos, id2 + 21))
 
+    probabilities = np.load('data/spawn_probabilities.npy')
+    print(len(probabilities))
+    for i, p in enumerate(probabilities):
+        stop_list[i].prob = p
 
     return stop_list
 
 
-#print(initialize_stoplist())
+# list = initialize_stoplist()
+# print([stop.prob for stop in list])

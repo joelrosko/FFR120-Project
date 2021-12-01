@@ -12,17 +12,18 @@ def load_json():
 
 class BusStop:
 
-    def __init__(self, name: str, position, index):
+    def __init__(self, name: str, position, index, prob=0):
         self.name = name
         self.position = position
         self.waiting_list = []
         self.index = index
+        self.prob = prob
 
     def __repr__(self):
         return f'Bus stop [{self.index}] "{self.name}" at pos: {self.position}:\n Waiting: {self.waiting_list}\n'
 
-    def create_passenger(self, current_time, prob):
-        if prob > np.random.rand():
+    def create_passenger(self, current_time):
+        if self.prob > np.random.rand():
             self.waiting_list.append(passenger.Passenger(current_time, self.index))
 
     def board_passenger(self, current_time):
@@ -31,7 +32,6 @@ class BusStop:
             return self.waiting_list.pop(0)
         else:
             print("Empty waiting list?")
-
 
 # Tests:
 # valand = BusStop("Valand", np.pi/2, 1337)

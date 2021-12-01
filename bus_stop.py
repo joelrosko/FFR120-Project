@@ -22,9 +22,9 @@ class BusStop:
     def __repr__(self):
         return f'Bus stop [{self.index}] "{self.name}" at pos: {self.position}:\n Waiting: {self.waiting_list}\n'
 
-    def create_passenger(self, current_time):
+    def create_passenger(self, current_time, travel_times):
         if self.prob > np.random.rand():
-            self.waiting_list.append(passenger.Passenger(current_time, self.index))
+            self.waiting_list.append(passenger.Passenger(current_time, self.index, travel_times))
 
     def board_passenger(self, current_time):
         if len(self.waiting_list) > 0:

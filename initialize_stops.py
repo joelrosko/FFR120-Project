@@ -43,5 +43,5 @@ def initialize_stoplist():
     return stop_list
 
 
-# list = initialize_stoplist()
-# print([stop.prob for stop in list])
+list = initialize_stoplist()
+print(list)

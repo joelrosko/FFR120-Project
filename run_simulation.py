@@ -7,7 +7,7 @@ import initialize_stops
 from simulation_window import Window
 from bus import Bus
 
-n_buses = 2
+n_buses = 20
 delay_time = []
 
 def load_json():

@@ -7,6 +7,7 @@ class Window:
         self.x0 = 15
         self.y0 = 15
         self.r = 10
+        self.stops = []
         self.buses = []
         self.window_style()
         self.init_window(stops)
@@ -22,8 +23,8 @@ class Window:
         for beta in stops:
             x = self.x0 + self.r*np.cos(beta.position)
             y = self.y0 + self.r*np.sin(beta.position)
-            stop = plt.Circle((x, y), 0.1, color='k', fill=True)
-            self.ax.add_patch(stop)
+            self.stops.append(plt.Circle((x, y), 0.1, color='k', fill=True))
+            self.ax.add_patch(self.stops[-1])
     
     def add_bus(self, start_angle):
         x = self.x0 + self.r*np.cos(start_angle)
@@ -39,11 +40,11 @@ class Window:
     
     def add_passengers(self, stop_idx, n_passengers):
         if n_passengers == 0:
-            self.ax._set_facecolor('y')
-            self.ax._set_edgecolor('y')
-        elif n_passengers > 0 and n_passengers < 5:
-            self.ax._set_facecolor('k')
-            self.ax._set_edgecolor('k')
+            self.stops[stop_idx]._set_facecolor('y')
+            self.stops[stop_idx]._set_edgecolor('y')
+        elif n_passengers > 0 and n_passengers < 10:
+            self.stops[stop_idx]._set_facecolor('k')
+            self.stops[stop_idx]._set_edgecolor('k')
         else:
-            self.ax._set_facecolor('r')
-            self.ax._set_edgecolor('r')
+            self.stops[stop_idx]._set_facecolor('r')
+            self.stops[stop_idx]._set_edgecolor('r')

@@ -24,7 +24,8 @@ def simulation(bstoplist, buses, window, travel_times):
         for bus_idx, current_bus in enumerate(buses):
             at_stop, stop_idx = current_bus.bus_at_stop()
             if at_stop:
-                if current_bus.passenger_list[:].end_index.any() == stop_idx:
+                passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
+                if any(passenger_end_idx == stop_idx):
                     passenger_idx = np.where(current_bus.passenger_list[:].end_index == stop_idx)
                     delay_time.append(current_bus.passenger_list[passenger_idx[0]].delay_time())
                     current_bus.remove_passenger(passenger_idx[0])

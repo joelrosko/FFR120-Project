@@ -18,7 +18,7 @@ def load_json():
 
 def simulation(bstoplist, buses, window, travel_times):
 <<<<<<< HEAD
-    for t in range(1000):
+    for t in range(10000):
         for n_stop, bus_stop in enumerate(bstoplist):
 =======
     for t in range(10000):

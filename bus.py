@@ -16,16 +16,21 @@ class Bus:
         self.stops = stops
         self.stop_position = [self.stops[i].position for i in range(len(self.stops))]
         self.next_stop = np.where(start_pos < self.stop_position)[0][0]
+        self.previous_stop = 0
 
     def bus_at_stop(self):
-        if (self.stop_position[self.next_stop] - self.position) < self.angular_velocity:
+        if (np.abs(self.stop_position[self.next_stop] - self.position)) < (self.angular_velocity/2):
+            self.previous_stop = self.next_stop
             self.at_stop = True
-            # put the bus positions = bus stop position??
             self.next_stop += 1
+            self.next_stop = self.next_stop % len(self.stop_position)
         else:
             self.at_stop = False
 
-        return self.at_stop, self.next_stop - 1
+        return self.at_stop, self.previous_stop
+
+    def boarding_complete(self):
+        self.at_stop = False
 
     def move_bus(self):
         self.bus_at_stop()

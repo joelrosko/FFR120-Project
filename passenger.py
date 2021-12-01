@@ -40,7 +40,7 @@ class Passenger:
         self.traveling_time = curr_time - self.start_time
 
     def delay_time(self):
-        return self.traveling_time-self.estimated_time
+        return self.traveling_time - self.estimated_time
 
 
 # hej = load_json()

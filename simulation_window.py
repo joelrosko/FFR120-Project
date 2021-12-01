@@ -18,8 +18,8 @@ class Window:
     
     def init_window(self, stops):
         for beta in stops:
-            x = self.x0 + self.r*np.cos(beta)
-            y = self.y0 + self.r*np.sin(beta)
+            x = self.x0 + self.r*np.cos(beta.position)
+            y = self.y0 + self.r*np.sin(beta.position)
             stop = plt.Circle((x, y), 0.1, color='k', fill=True)
             self.ax.add_patch(stop)
     

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import initialize_stops
-import simulation_window
-import bus
+from simulation_window import Window
+from bus import Bus
 
 n_buses = 2
 delay_time = []
@@ -33,8 +33,8 @@ def simulation(bstoplist, buses, window):
 
 def main():
     bstoplist = initialize_stops.initialize_stoplist()
-    window = simulation_window(bstoplist)
-    buses = [bus(bstoplist, 0), bus(bstoplist, 3.14)]
+    window = Window(bstoplist)
+    buses = [Bus(bstoplist, 0), Bus(bstoplist, 3.14)]
 
     simulation(bstoplist, buses, window)
 

@@ -14,7 +14,7 @@ class Bus:
         self.passenger_list = []
         self.at_stop = False
         self.stops = stops
-        self.stop_position = [self.stops[i].position for i in range(len(self.stops))]
+        self.stop_position = np.array([self.stops[i].position for i in range(len(self.stops))])
         self.next_stop = np.where(start_pos < self.stop_position)[0][0]
         self.previous_stop = 0
 

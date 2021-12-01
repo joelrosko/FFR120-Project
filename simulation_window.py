@@ -34,3 +34,6 @@ class Window:
         y = self.y0 + self.r*np.sin(new_angle)
         self.buses[n_bus].set_angle(new_angle*180/np.pi)
         self.buses[n_bus].set_xy((x, y))
+    
+    def add_passengers(self):
+        pass

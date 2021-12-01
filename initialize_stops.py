@@ -21,15 +21,22 @@ def initialize_stoplist():
     tmptime = 0
 
     for id1, name in enumerate(names):
+        if id1 == 21:
+            tmptime += times[id1]
+            continue
         tmptime += times[id1]
         pos = angle_1min*tmptime
         stop_list.append(BusStop(f"{name} norrgående", pos, id1))
 
     for id2, name in enumerate(reversed(names)):
+        if id2 == 21:
+            continue
         tmptime += times[-id2]
         pos = angle_1min * tmptime
-        stop_list.append(BusStop(f"{name} södergående", pos, id2 + 22))
+        stop_list.append(BusStop(f"{name} södergående", pos, id2 + 21))
+
 
     return stop_list
 
 
+#print(initialize_stoplist())

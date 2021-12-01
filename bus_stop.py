@@ -21,13 +21,11 @@ class BusStop:
     def __repr__(self):
         return f'Bus stop [{self.index}] "{self.name}" at pos: {self.position}:\n Waiting: {self.waiting_list}\n'
 
-    def add_passenger(self, current_time):
-        # TODO should create a passenger instance at the stop. (time of arrival)
-        self.waiting_list.append(passenger.Passenger(current_time, self.index))  # Temporary testman string instead of Passenger
+    def create_passenger(self, current_time, prob):
+        if prob > np.random.rand():
+            self.waiting_list.append(passenger.Passenger(current_time, self.index))
 
     def board_passenger(self, current_time):
-        # TODO return a passenger to be boarded, maybe the one who waited the longest
-
         if len(self.waiting_list) > 0:
             self.waiting_list[0].wait_time(current_time)    # Calls Passenger.wait_time() to measure time spent at stop
             return self.waiting_list.pop(0)

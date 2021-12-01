@@ -42,7 +42,8 @@ class Passenger:
     def travel_time(self, curr_time):
         self.traveling_time = curr_time - self.start_time
 
-    def delay_time(self):
+    def delay_time(self, curr_time):
+        self.traveling_time = curr_time - self.start_time
         return self.traveling_time - self.estimated_time
 
 

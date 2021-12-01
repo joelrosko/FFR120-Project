@@ -19,7 +19,7 @@ class Bus:
         self.previous_stop = 0
 
     def bus_at_stop(self):
-        if (self.stop_position[self.next_stop] - self.position) < self.angular_velocity:
+        if (np.abs(self.stop_position[self.next_stop] - self.position)) < (self.angular_velocity/2):
             self.previous_stop = self.next_stop
             self.at_stop = True
             self.next_stop += 1

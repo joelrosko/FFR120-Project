@@ -17,7 +17,7 @@ def load_json():
     return tmp_travel_times['times']
 
 def simulation(bstoplist, buses, window, travel_times):
-    for t in range(1000):
+    for t in range(10000):
         print(f'At time step {t}')
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)
@@ -55,7 +55,7 @@ def main():
 
     simulation(bstoplist, buses, window, travel_times)
     mean_delay_time = np.mean(delay_time)
-    print(f'Average delay time {mean_delay_time}')
+    print(f'Average delay time {mean_delay_time/60} min')
 
 if __name__ == '__main__':
     main()

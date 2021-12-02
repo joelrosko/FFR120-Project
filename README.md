@@ -3,13 +3,13 @@
 ### Project plan
 - Project scheme &check;
 - Git start up :) &check;
-- Assigned classes
+- Assigned classes &check; &check; 
 - Report 
 
 ### Classes
 - Alex
     - Bus
-      - add-passenger (1 per timestep)
+      - add-passenger (1 per timestep) hejhej
       - drop-passenger (1 per timestep)
       - max nr of passengers
       - no passing of other buses

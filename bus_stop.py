@@ -29,7 +29,6 @@ class BusStop:
     def board_passenger(self, current_time):
         if len(self.waiting_list) > 0:
             self.waiting_list[0].wait_time(current_time)
-            print(f'{self.waiting_list[0]} boarding')# Calls Passenger.wait_time() to measure time spent at stop
             return self.waiting_list.pop(0)
         else:
             print("Empty waiting list?")

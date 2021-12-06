@@ -24,7 +24,9 @@ class Passenger:
             flipped_travel_times = travel_times[::-1]
             if self.end_index == 42:
                 self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):])
-            self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):(self.end_index % 21)])
+                self.end_index = 0
+            else:
+                self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):(self.end_index % 21)])
 
     def __repr__(self):
         return f'From bus stop "{self.start_index}" to "{self.end_index}"\n'

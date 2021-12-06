@@ -3,7 +3,7 @@ import numpy as np
 
 class Window:
     def __init__(self, stops):
-        self.fig, self.ax = plt.subplots(1,1)
+        self.fig, self.ax = plt.subplots(1,1, figsize=[6,6])
         self.x0 = 15
         self.y0 = 15
         self.r = 10

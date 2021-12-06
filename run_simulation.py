@@ -19,9 +19,11 @@ def load_json():
 
 
 def simulation(bstoplist, buses, window, travel_times):
-    for t in range(100000):
-        if t % 1000 == 0:
-            print(f'At time step {t}')
+    for t in range(8*3600):
+        if t % 1800 == 0:
+            print(f'At time step {t}, {t/3600} hours')
+            print(f'Average passenger delay: {np.average(delay_time)/60} min')
+            print(f'Standard deviation: {np.std(delay_time)/60} min')
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)
             window.add_passengers(n_stop, len(bus_stop.waiting_list))

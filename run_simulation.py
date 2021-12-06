@@ -26,7 +26,7 @@ def simulation(bstoplist, buses, window, travel_times):
             print(f'Average passenger delay: {np.average(delay_time)/60} min')
             print(f'Standard deviation: {np.std(delay_time)/60} min')
             print(f'Max {np.max(delay_time)/60}, min {np.min(delay_time)/60}')
-            print(f'Average amount at stop: {np.average(people_waiting)}')
+            print(f'People waiting: {people_waiting}')
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)
             window.add_passengers(n_stop, len(bus_stop.waiting_list))

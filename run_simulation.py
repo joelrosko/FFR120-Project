@@ -10,11 +10,13 @@ from bus import Bus
 n_buses = 20
 delay_time = []
 
+
 def load_json():
     with open('data/travel_time.json', 'r') as json_file:
         tmp_travel_times = json.load(json_file)
 
     return tmp_travel_times['times']
+
 
 def simulation(bstoplist, buses, window, travel_times):
     for t in range(100000):

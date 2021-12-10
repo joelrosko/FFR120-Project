@@ -78,17 +78,17 @@ def simulation(bstoplist, buses, window, travel_times, control):
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
                 if any(passenger_end_idx == stop_idx):
                     passenger_idx = np.where(passenger_end_idx == stop_idx)
-                    delay_time.append([int(current_bus.passenger_list[passenger_idx[0][0]].delay_time(t)), t])
+                    delay_time.append(int(current_bus.passenger_list[passenger_idx[0][0]].delay_time(t)))
                     current_bus.remove_passenger(passenger_idx[0][0])
                 elif bstoplist[stop_idx].waiting_list != []:
-                    waiting_time.append([int(bstoplist[stop_idx].waiting_list[0].wait_time(t)), t])
+                    waiting_time.append(int(bstoplist[stop_idx].waiting_list[0].wait_time(t)))
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     b1 = current_bus.position
                     b2 = buses[(bus_idx + 1) % n_buses].position
                     dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
-                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*0.75) and control:
-                        continue
+                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*0.9) and control:
+                        pass
                     else:
                         current_bus.boarding_complete()
 

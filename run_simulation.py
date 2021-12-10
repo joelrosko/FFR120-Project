@@ -87,7 +87,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     b1 = current_bus.position
                     b2 = buses[(bus_idx + 1) % n_buses].position
                     dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
-                    if (np.abs(dist) >= ((2*np.pi)/n_buses)*1.25) and control:
+                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*1.25) and control:
                         continue
                     else:
                         current_bus.boarding_complete()

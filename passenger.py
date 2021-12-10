@@ -18,15 +18,15 @@ class Passenger:
         if self.start_index < 21:
             # under funkar inte, self.start_index + 1 kan va >= 21
             self.end_index = int(np.random.randint(self.start_index + 1, 22, 1))
-            self.estimated_time = np.sum(travel_times[self.start_index:self.end_index])
+            self.estimated_time = np.sum(travel_times[self.start_index:self.end_index])*60
         else:
             self.end_index = int(np.random.randint(self.start_index + 1, 43, 1))
             flipped_travel_times = travel_times[::-1]
             if self.end_index == 42:
-                self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):])
+                self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):])*60
                 self.end_index = 0
             else:
-                self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):(self.end_index % 21)])
+                self.estimated_time = np.sum(flipped_travel_times[(self.start_index % 21):(self.end_index % 21)])*60
 
     def __repr__(self):
         return f'From bus stop "{self.start_index}" to "{self.end_index}"\n'

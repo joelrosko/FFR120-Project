@@ -63,9 +63,10 @@ def simulation(bstoplist, buses, window, travel_times, control):
         if t % 1800 == 0 and t != 0:
             people_waiting = [len(bstop.waiting_list) for bstop in bstoplist]
             print(f'At time step {t}, {t/3600} hours')
-            print(f'Average passenger delay: {np.average(delay_time)/60} min')
-            print(f'Standard deviation: {np.std(delay_time)/60} min')
-            print(f'Max {np.max(delay_time)/60}, min {np.min(delay_time)/60}')
+            print(f'Average passenger delay: {np.average(np.array(delay_time)[:,0])/60} min')
+            print(f'Standard deviation: {np.std(np.array(delay_time)[:,0])/60} min')
+            print(f'Max {np.max(np.array(delay_time)[:,0])/60}, min {np.min(np.array(delay_time)[:,0])/60}')
+            # print(f'Delays: {np.array(delay_time)[:,0]/60}')
             print(f'People waiting: {people_waiting}')
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)

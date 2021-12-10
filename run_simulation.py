@@ -15,6 +15,9 @@ bunching_coef = []  # Variance in distance between buses
 var_buss_passengers = []
 n_waiting_passengers = []
 
+def dist(b1,b2):
+    return np.abs(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
+
 def load_json():
     with open('data/travel_time.json', 'r') as json_file:
         tmp_travel_times = json.load(json_file)
@@ -77,21 +80,23 @@ def simulation(bstoplist, buses, window, travel_times, control):
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
                 if any(passenger_end_idx == stop_idx):
-                    passenger_idx = np.where(passenger_end_idx == stop_idx)
-                    delay_time.append(int(current_bus.passenger_list[passenger_idx[0][0]].delay_time(t)))
-                    current_bus.remove_passenger(passenger_idx[0][0])
+                    passenger_idx = np.where(passenger_end_idx == stop_idx)[0][0]
+                    delay_time.append([int(current_bus.passenger_list[passenger_idx].delay_time(t)), t])
+                    current_bus.remove_passenger(passenger_idx)
                 elif bstoplist[stop_idx].waiting_list != []:
-                    waiting_time.append(int(bstoplist[stop_idx].waiting_list[0].wait_time(t)))
+                    waiting_time.append([int(bstoplist[stop_idx].waiting_list[0].wait_time(t)), t])
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
-                    b1 = current_bus.position
-                    b2 = buses[(bus_idx + 1) % n_buses].position
-                    dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
-                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*0.9) and control:
+
+                    dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
+                    dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
+                    if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
                         pass
                     else:
                         current_bus.boarding_complete()
 
+                  #  if control:
+                     #   if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and (dist_behind >= ((2*np.pi)/n_buses)*1.25):
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)

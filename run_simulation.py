@@ -55,7 +55,8 @@ def simulation(bstoplist, buses, window, travel_times):
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
-        
+                window.move_staple()
+
         plt.pause(0.001)
 
 def main():

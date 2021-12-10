@@ -32,6 +32,7 @@ def simulation(bstoplist, buses, window, travel_times):
             window.add_passengers(n_stop, len(bus_stop.waiting_list))
 
         for bus_idx, current_bus in enumerate(buses):
+
             at_stop, stop_idx = current_bus.bus_at_stop()
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
@@ -43,6 +44,10 @@ def simulation(bstoplist, buses, window, travel_times):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     current_bus.boarding_complete()
+            elif np.abs(current_bus.position - buses[(bus_idx + 1) % n_buses].position) >= (2*np.pi)/n_buses:
+                current_bus.move_bus_slow()
+                window.move_bus(bus_idx, current_bus.position)
+
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)

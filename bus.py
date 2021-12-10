@@ -37,6 +37,10 @@ class Bus:
             self.position += self.angular_velocity
             self.position = self.position % (2*np.pi)
 
+    def move_bus_slow(self):
+        self.position += self.angular_velocity/10
+        self.position = self.position % (2*np.pi)
+
     def n_free_seats(self):
         return self.max_passengers - self.n_passengers
     

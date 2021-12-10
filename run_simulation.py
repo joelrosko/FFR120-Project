@@ -20,10 +20,13 @@ def load_json():
 
 def simulation(bstoplist, buses, window, travel_times):
     for t in range(8*3600):
-        if t % 1800 == 0:
+        if t % 1800 == 0 and t != 0:
+            people_waiting = [len(bstop.waiting_list) for bstop in bstoplist]
             print(f'At time step {t}, {t/3600} hours')
             print(f'Average passenger delay: {np.average(delay_time)/60} min')
             print(f'Standard deviation: {np.std(delay_time)/60} min')
+            print(f'Max {np.max(delay_time)/60}, min {np.min(delay_time)/60}')
+            print(f'People waiting: {people_waiting}')
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)
             window.add_passengers(n_stop, len(bus_stop.waiting_list))
@@ -36,7 +39,7 @@ def simulation(bstoplist, buses, window, travel_times):
                     passenger_idx = np.where(passenger_end_idx == stop_idx)
                     delay_time.append(current_bus.passenger_list[passenger_idx[0][0]].delay_time(t))
                     current_bus.remove_passenger(passenger_idx[0][0])
-                elif bstoplist[stop_idx].waiting_list != []:
+                elif bstoplist[stop_idx].waiting_list:
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     current_bus.boarding_complete()

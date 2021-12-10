@@ -54,7 +54,7 @@ def get_bunching_coef(buses):
         dist.append(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
     return np.var(dist)
 
-def simulation(bstoplist, buses, window, travel_times):
+def simulation(bstoplist, buses, window, travel_times, control):
     for t in range(8*3600):
         if t % 600 == 0 and t != 0:
             var_buss_passengers.append(get_var_passenger(buses))
@@ -84,14 +84,19 @@ def simulation(bstoplist, buses, window, travel_times):
                     waiting_time.append([int(bstoplist[stop_idx].waiting_list[0].wait_time(t)), t])
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
-                    current_bus.boarding_complete()
-            elif np.abs(current_bus.position - buses[(bus_idx - 1) % n_buses].position) >= 1.25*((2*np.pi)/n_buses):
-                current_bus.move_bus_slow()
-                window.move_bus(bus_idx, current_bus.position)
+                    b1 = current_bus.position
+                    b2 = buses[(bus_idx + 1) % n_buses].position
+                    dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
+                    if (np.abs(dist) >= ((2*np.pi)/n_buses)*1.25) and control:
+                        continue
+                    else:
+                        current_bus.boarding_complete()
+
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
-        
+                window.move_staple()
+
         plt.pause(0.001)
 
 def main():
@@ -106,7 +111,7 @@ def main():
     for bus in buses:
         window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times)
+    simulation(bstoplist, buses, window, travel_times, control=True)
     write_json()
 
 if __name__ == '__main__':

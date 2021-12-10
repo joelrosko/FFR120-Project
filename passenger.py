@@ -39,7 +39,8 @@ class Passenger:
                f'Estimated time: {self.estimated_time} ts\n'
 
     def wait_time(self, current_time):
-        self.waiting_time = current_time - self.start_time
+        #self.waiting_time = current_time - self.start_time
+        return current_time - self.start_time
 
     def travel_time(self, curr_time):
         self.traveling_time = curr_time - self.start_time

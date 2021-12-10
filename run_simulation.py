@@ -91,13 +91,16 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
                     dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
                     dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
-                    if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
+                    # if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
+                    #     pass
+                    # else:
+                    #     current_bus.boarding_complete()
+
+                  #  if control:
+                    if dist_infront < dist_behind and control:
                         pass
                     else:
                         current_bus.boarding_complete()
-
-                  #  if control:
-                     #   if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and (dist_behind >= ((2*np.pi)/n_buses)*1.25):
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)

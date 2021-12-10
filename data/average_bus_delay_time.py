@@ -14,7 +14,8 @@ if pick_up_time*20/2*60 > np.multiply(np.sum(low), bustime*2*60):
     print('Ok!')
 else:
     print('Not ok!')
-
+print(np.max(low)/np.min(low))
+print(len(low))
 # new_low = np.multiply(low, 1/2.08)
 # print(new_low)
 # np.save('spawn_probabilities_low.npy', new_low)

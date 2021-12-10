@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.patches as ptc
 import numpy as np
 
 class Window:
@@ -8,9 +9,15 @@ class Window:
         self.y0 = 15
         self.r = 10
         self.stops = []
+        self.stop_staple = []
         self.buses = []
         self.window_style()
+        self.x_pos = np.zeros([1, len(stops)])
+        self.y_pos = np.zeros([1, len(stops)])
+        self.x_angle = np.zeros([1, len(stops)])
+        self.y_angle = np.zeros([1, len(stops)])
         self.init_window(stops)
+
     
     def window_style(self):
         self.ax.set_xlim(0,30)
@@ -20,11 +27,20 @@ class Window:
     def init_window(self, stops):
         circ = plt.Circle((15, 15), 10, color='grey', fill=False)
         self.ax.add_patch(circ)
+        p = 0
         for beta in stops:
             x = self.x0 + self.r*np.cos(beta.position)
             y = self.y0 + self.r*np.sin(beta.position)
+            self.x_angle[0, p] = np.cos(beta.position)
+            self.y_angle[0, p] = np.sin(beta.position)
+            self.x_pos[0, p] = x
+            self.y_pos[0, p] = y
             self.stops.append(plt.Circle((x, y), 0.1, color='k', fill=True))
+            self.stop_staple.append(ptc.FancyArrowPatch(posA=(x, y),
+                                                        posB=(x+np.cos(beta.position), y+np.sin(beta.position))))
+            self.ax.add_patch(self.stop_staple[-1])
             self.ax.add_patch(self.stops[-1])
+            p += 1
     
     def add_bus(self, start_angle):
         x = self.x0 + self.r*np.cos(start_angle)
@@ -39,12 +55,8 @@ class Window:
         self.buses[n_bus].set_xy((x, y))
     
     def add_passengers(self, stop_idx, n_passengers):
-        if n_passengers == 0:
-            self.stops[stop_idx]._set_facecolor('y')
-            self.stops[stop_idx]._set_edgecolor('y')
-        elif n_passengers > 0 and n_passengers < 10:
-            self.stops[stop_idx]._set_facecolor('k')
-            self.stops[stop_idx]._set_edgecolor('k')
-        else:
-            self.stops[stop_idx]._set_facecolor('r')
-            self.stops[stop_idx]._set_edgecolor('r')
+        self.stop_staple[stop_idx].set_positions(posA=(self.x_pos[0, stop_idx],
+                                                       self.y_pos[0, stop_idx]),
+                                                 posB=((self.x_pos[0, stop_idx] -
+                                                       0.1*n_passengers*self.x_angle[0, stop_idx]),
+                                                       (self.y_pos[0, stop_idx] - 0.1*n_passengers*self.y_angle[0, stop_idx])))

@@ -60,7 +60,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
             var_buss_passengers.append(get_var_passenger(buses))
             n_waiting_passengers.append(get_waiting_passenger(bstoplist))
             bunching_coef.append(get_bunching_coef(buses))
-        elif t % 1800 == 0 and t != 0:
+        if t % 1800 == 0 and t != 0:
             people_waiting = [len(bstop.waiting_list) for bstop in bstoplist]
             print(f'At time step {t}, {t/3600} hours')
             print(f'Average passenger delay: {np.average(delay_time)/60} min')
@@ -87,7 +87,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     b1 = current_bus.position
                     b2 = buses[(bus_idx + 1) % n_buses].position
                     dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
-                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*1.25) and control:
+                    if (np.abs(dist) <= ((2*np.pi)/n_buses)*0.75) and control:
                         continue
                     else:
                         current_bus.boarding_complete()

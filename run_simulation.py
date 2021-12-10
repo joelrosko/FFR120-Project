@@ -30,15 +30,15 @@ def write_json():
     bunching_coef_dict = {'bunching_coef': bunching_coef}
     var_buss_passengers_dict = {'var_passengers': var_buss_passengers}
     n_waiting_passengers_dict = {'waiting_passengers': n_waiting_passengers}
-    with open('data/delay_times.json', 'w', encoding='utf-8') as json_file:
+    with open('data/delay_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(delay_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_times.json', 'w', encoding='utf-8') as json_file:
+    with open('data/waiting_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(waiting_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/bunching_coef.json', 'w', encoding='utf-8') as json_file:
+    with open('data/bunching_coef_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(bunching_coef_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/var_passengers.json', 'w', encoding='utf-8') as json_file:
+    with open('data/var_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(var_buss_passengers_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_passengers.json', 'w', encoding='utf-8') as json_file:
+    with open('data/waiting_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
 def get_var_passenger(buses):
@@ -117,7 +117,7 @@ def main():
     for bus in buses:
         window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times, control=True)
+    simulation(bstoplist, buses, window, travel_times, control=False)
     write_json()
 
 if __name__ == '__main__':

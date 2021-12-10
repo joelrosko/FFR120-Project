@@ -20,16 +20,20 @@ def waiting_time():
     plt.plot(np.linspace(0,8*3600, len(moving_average)), moving_average, linewidth=2, color='skyblue')
 
 def bunching_coef():
-    data = load_json('bunching_coef', 'bunching_coef')
-    plt.plot(np.linspace(0,8*3600, len(data)), data, linewidth=2, color='skyblue')
+    control = load_json('bunching_coef', 'bunching_coef')
+    no_control = load_json('bunching_coef_nocontrol', 'bunching_coef')
+    plt.plot(np.linspace(0,8*3600, len(control)), control, linewidth=2, color='skyblue')
+    plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='red')
 
 def var_passengers():
     data = load_json('var_passengers', 'var_passengers')
     plt.plot(np.linspace(0,8*3600, len(data)), data, linewidth=2, color='skyblue')
 
 def waiting_passengers():
-    data = load_json('waiting_passengers', 'waiting_passengers')
-    plt.plot(np.linspace(0,8*3600, len(data)), data, linewidth=2, color='skyblue')
+    control = load_json('waiting_passengers', 'waiting_passengers')
+    no_control = load_json('waiting_passengers_nocontrol', 'waiting_passengers')
+    plt.plot(np.linspace(0,8*3600, len(control)), control, linewidth=2, color='skyblue')
+    plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='red')
 
 def main():
     waiting_passengers()

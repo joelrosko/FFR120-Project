@@ -10,6 +10,7 @@ class Window:
         self.r = 10
         self.stops = []
         self.stop_staple = []
+        self.passenger_on_stop = np.zeros([1, len(stops)])
         self.buses = []
         self.window_style()
         self.x_pos = np.zeros([1, len(stops)])
@@ -55,8 +56,12 @@ class Window:
         self.buses[n_bus].set_xy((x, y))
     
     def add_passengers(self, stop_idx, n_passengers):
-        self.stop_staple[stop_idx].set_positions(posA=(self.x_pos[0, stop_idx],
-                                                       self.y_pos[0, stop_idx]),
-                                                 posB=((self.x_pos[0, stop_idx] -
-                                                       0.1*n_passengers*self.x_angle[0, stop_idx]),
-                                                       (self.y_pos[0, stop_idx] - 0.1*n_passengers*self.y_angle[0, stop_idx])))
+        self.passenger_on_stop[0, stop_idx] = n_passengers
+
+    def move_staple(self):
+        for stop_index, nr_of_passengers in enumerate(self.passenger_on_stop[0, :]):
+            self.stop_staple[stop_index].set_positions(posA=(self.x_pos[0, stop_index], self.y_pos[0, stop_index]),
+                                                       posB=((self.x_pos[0, stop_index] -
+                                                              0.1*nr_of_passengers*self.x_angle[0, stop_index]),
+                                                       (self.y_pos[0, stop_index] -
+                                                        0.1*nr_of_passengers*self.y_angle[0, stop_index])))

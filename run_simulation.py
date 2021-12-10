@@ -44,13 +44,16 @@ def simulation(bstoplist, buses, window, travel_times):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     current_bus.boarding_complete()
-            elif np.abs(current_bus.position - buses[(bus_idx + 1) % n_buses].position) >= (2*np.pi)/n_buses:
-                current_bus.move_bus_slow()
-                window.move_bus(bus_idx, current_bus.position)
+            # elif np.abs(current_bus.position - buses[(bus_idx - 1) % n_buses].position) >= (2*np.pi)/n_buses:
+            #     current_bus.move_bus_slow()
+            #     window.move_bus(bus_idx, current_bus.position)
+            #     window.move_staple()
+
 
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
+                window.move_staple()
         
         plt.pause(0.001)
 

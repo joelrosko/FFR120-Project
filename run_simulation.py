@@ -19,7 +19,7 @@ def load_json():
     return tmp_travel_times['times']
 
 
-def simulation(bstoplist, buses, window, travel_times):
+def simulation(bstoplist, buses, window, travel_times, control):
     for t in range(8*3600):
         if t % 1800 == 0 and t != 0:
             people_waiting = [len(bstop.waiting_list) for bstop in bstoplist]
@@ -45,9 +45,9 @@ def simulation(bstoplist, buses, window, travel_times):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
                     b1 = current_bus.position
-                    b2 = buses[(bus_idx - 1) % n_buses].position
+                    b2 = buses[(bus_idx + 1) % n_buses].position
                     dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
-                    if np.abs(dist) >= ((2*np.pi)/n_buses)*1.25:
+                    if (np.abs(dist) >= ((2*np.pi)/n_buses)*1.25) and control:
                         continue
                     else:
                         current_bus.boarding_complete()
@@ -71,7 +71,7 @@ def main():
     for bus in buses:
         window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times)
+    simulation(bstoplist, buses, window, travel_times, control=True)
 
 if __name__ == '__main__':
     main()

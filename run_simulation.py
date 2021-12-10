@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import json
+import math
 
 import initialize_stops
 from simulation_window import Window
@@ -43,10 +44,13 @@ def simulation(bstoplist, buses, window, travel_times):
                 elif bstoplist[stop_idx].waiting_list:
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
-                    current_bus.boarding_complete()
-            elif np.abs(current_bus.position - buses[(bus_idx + 1) % n_buses].position) >= (2*np.pi)/n_buses:
-                current_bus.move_bus_slow()
-                window.move_bus(bus_idx, current_bus.position)
+                    b1 = current_bus.position
+                    b2 = buses[(bus_idx - 1) % n_buses].position
+                    dist = math.atan2(np.sin(b1-b2), np.cos(b1-b2))
+                    if np.abs(dist) >= ((2*np.pi)/n_buses)*1.25:
+                        continue
+                    else:
+                        current_bus.boarding_complete()
 
             else:
                 current_bus.move_bus()

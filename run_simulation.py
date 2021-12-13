@@ -8,6 +8,7 @@ import initialize_stops
 from simulation_window import Window
 from bus import Bus
 
+n_runs = 10
 n_buses = 20
 delay_time = []
 waiting_time = []
@@ -24,21 +25,21 @@ def load_json():
 
     return tmp_travel_times['times']
 
-def write_json():
+def write_json(i):
     delay_time_dict = {'delay_times': delay_time}
     waiting_time_dict = {'waiting_times': waiting_time}
     bunching_coef_dict = {'bunching_coef': bunching_coef}
     var_buss_passengers_dict = {'var_passengers': var_buss_passengers}
     n_waiting_passengers_dict = {'waiting_passengers': n_waiting_passengers}
-    with open('data/delay_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/delay_times_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(delay_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/waiting_times_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(waiting_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/bunching_coef_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/bunching_coef_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(bunching_coef_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/var_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/var_passengers_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(var_buss_passengers_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/waiting_passengers_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
 def get_var_passenger(buses):
@@ -109,19 +110,20 @@ def simulation(bstoplist, buses, window, travel_times, control):
         plt.pause(0.001)
 
 def main():
-    travel_times = load_json()
-    bstoplist = initialize_stops.initialize_stoplist()
-    window = Window(bstoplist)
-    buses = []
-    bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
-    for pos in bus_pos:
-        buses.append(Bus(bstoplist, pos))
+    for run in range(1, n_runs+1):
+        travel_times = load_json()
+        bstoplist = initialize_stops.initialize_stoplist()
+        window = Window(bstoplist)
+        buses = []
+        bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
+        for pos in bus_pos:
+            buses.append(Bus(bstoplist, pos))
 
-    for bus in buses:
-        window.add_bus(bus.position)
+        for bus in buses:
+            window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times, control=False)
-    write_json()
+        simulation(bstoplist, buses, window, travel_times, control=False)
+        write_json(run)
 
 if __name__ == '__main__':
     main()

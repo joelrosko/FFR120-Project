@@ -44,7 +44,7 @@ def waiting_passengers():
     plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='red')
 
 def main():
-    var_passengers()
+    waiting_passengers()
 
 if __name__ == '__main__':
     main()

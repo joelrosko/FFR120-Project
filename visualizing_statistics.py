@@ -14,8 +14,16 @@ def create_fig(title):
     fig.suptitle(title)
     return fig, ax
 
-def delay_time():
-    data = load_json('delay_times', 'delay_times')
+def delay_time(n_files):
+    fig, ax = create_fig('Average delay times')
+    file_names = ['delay_times_nocontrol', 'delay_times_control', 'delay_times_dubblecontrol']
+    cols = ['r', 'mediumaquamarine', 'skyblue']
+    for file_name, col in zip(file_names, cols):
+        for file_nr in range(1, n_files+1):
+            data = np.array(load_json(file_name+file_nr, 'delay_times'))
+            delay_times, time_stamps = data[0,:], data[1,:]
+
+
     moving_average = np.convolve(data, np.ones(500), 'valid') / 500
     plt.plot(np.linspace(0,8*3600, len(moving_average)), moving_average, linewidth=2, color='skyblue')
 

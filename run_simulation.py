@@ -15,14 +15,17 @@ bunching_coef = []  # Variance in distance between buses
 var_buss_passengers = []
 n_waiting_passengers = []
 
+
 def dist(b1,b2):
     return np.abs(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
+
 
 def load_json():
     with open('data/travel_time.json', 'r') as json_file:
         tmp_travel_times = json.load(json_file)
 
     return tmp_travel_times['times']
+
 
 def write_json():
     delay_time_dict = {'delay_times': delay_time}
@@ -41,13 +44,16 @@ def write_json():
     with open('data/waiting_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
+
 def get_var_passenger(buses):
     n_passengers = [bus.n_passengers for bus in buses]
     return np.var(n_passengers)
 
+
 def get_waiting_passenger(bstoplist):
     waiting_passengers = [len(stop.waiting_list) for stop in bstoplist]
     return sum(waiting_passengers)
+
 
 def get_bunching_coef(buses):
     dist = []
@@ -56,6 +62,7 @@ def get_bunching_coef(buses):
         b2 = buses[(i+1) % n_buses].position
         dist.append(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
     return np.var(dist)
+
 
 def simulation(bstoplist, buses, window, travel_times, control):
     for t in range(8*3600):
@@ -118,6 +125,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
         plt.pause(0.001)
 
+
 def main():
     travel_times = load_json()
     bstoplist = initialize_stops.initialize_stoplist()
@@ -132,6 +140,7 @@ def main():
 
     simulation(bstoplist, buses, window, travel_times, control=True)
     write_json()
+
 
 if __name__ == '__main__':
     main()

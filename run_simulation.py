@@ -27,15 +27,15 @@ def write_json(i, delay_time, waiting_time, bunching_coef, var_buss_passengers, 
     bunching_coef_dict = {'bunching_coef': bunching_coef}
     var_buss_passengers_dict = {'var_passengers': var_buss_passengers}
     n_waiting_passengers_dict = {'waiting_passengers': n_waiting_passengers}
-    with open(f'data/front_back/delay_times_front_back{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/schedule/delay_times_schedule{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(delay_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front_back/waiting_times_front_back{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/schedule/waiting_times_schedule{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(waiting_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front_back/bunching_coef_front_back{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/schedule/bunching_coef_schedule{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(bunching_coef_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front_back/var_passengers_front_back{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/schedule/var_passengers_schedule{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(var_buss_passengers_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front_back/waiting_passengers_front_back{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/schedule/waiting_passengers_schedule{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
 
@@ -106,19 +106,19 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     #else:
                     #    current_bus.boarding_complete()
 
-                    if dist_infront < dist_behind and control:
-                        pass
-                    else:
-                        current_bus.boarding_complete()
-
-                    #current_bus.late_or_not(t)
-                    #if current_bus.late:
-                    #    if current_bus.first_time:
-                    #        current_bus.time_to_next_stop += t
-                    #        current_bus.first_time = False
-                    #    current_bus.boarding_complete()
-                    #else:
+                    #if dist_infront < dist_behind and control:
                     #    pass
+                    #else:
+                    #    current_bus.boarding_complete()
+
+                    current_bus.late_or_not(t)
+                    if current_bus.late:
+                        if current_bus.first_time:
+                            current_bus.time_to_next_stop += t
+                            current_bus.first_time = False
+                        current_bus.boarding_complete()
+                    else:
+                        pass
 
             else:
                 current_bus.move_bus()

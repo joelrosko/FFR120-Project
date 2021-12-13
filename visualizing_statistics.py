@@ -6,7 +6,7 @@ import matplotlib.dates as md
 plt.style.use('seaborn')
 
 
-def load_json(filename, field):
+def load_json(filename, field='delay_times'):
     with open(f'data/{filename}.json', 'r') as json_file:
         data = json.load(json_file)
 
@@ -21,27 +21,45 @@ def get_timestamps(array):
 
 
 def delay_time():
-    control1 = np.array(load_json('delay_times', 'delay_times'))
+    control1 = np.array(load_json('front/delay_times_front1'))
+    for i in range(2,6):
+        control1 = np.append(control1, load_json(f'front/delay_times_front{i}'), axis=0)
     df1 = pd.DataFrame({'delay': control1[:, 0]})
     df1.index = get_timestamps(control1)
+    df1.sort_index(inplace=True)
 
-    no_control = np.array(load_json('delay_times_nocontrol', 'delay_times'))
+    no_control = np.array(load_json('no_control/delay_times_no_control1'))
+    for i in range(2,6):
+        no_control = np.append(no_control, load_json(f'no_control/delay_times_no_control{i}'), axis=0)
     df_nc = pd.DataFrame({'delay': no_control[:, 0]})
     df_nc.index = get_timestamps(no_control)
+    df_nc.sort_index(inplace=True)
 
-    control2 = np.array(load_json('delay_times_dubblecontrol', 'delay_times'))
+    control2 = np.array(load_json('front_back/delay_times_front_back1'))
+    for i in range(2,6):
+        control2 = np.append(control2, load_json(f'front_back/delay_times_front_back{i}'), axis=0)
     df2 = pd.DataFrame({'delay': control2[:,0]})
     df2.index = get_timestamps(control2)
+    df2.sort_index(inplace=True)
 
+    # scheduled = np.array(load_json('scheduled/delay_times_scheduled1', 'delay_times'))
+    # for i in range(2,6):
+        # scheduled = np.append(scheduled, load_json(f'scheduled/delay_times_scheduled{i}'), axis=0)
+    # df3 = pd.DataFrame({'delay': scheduled[:,0]})
+    # df3.index = get_timestamps(scheduled)
+    # df3.sort_index(inplace=True)
+
+    roll_nc = df_nc.rolling('600s', min_periods=1).mean()
     roll1 = df1.rolling('600s', min_periods=1).mean()
     roll2 = df2.rolling('600s', min_periods=1).mean()
-    roll_nc = df_nc.rolling('600s', min_periods=1).mean()
+    # roll3 = df3.rolling('600s', min_periods=1).mean()
 
     fig = plt.figure("Passenger delays")
     ax_dt = fig.add_subplot()
-    ax_dt.plot(roll1, linewidth=2, color='skyblue', label='Controlled, how?')
     ax_dt.plot(roll_nc, linewidth=2, color='red', label='Uncontrolled')
-    ax_dt.plot(roll2, linewidth=2, color='g', label='Controlled, double')
+    ax_dt.plot(roll1, linewidth=2, color='skyblue', label='Front control')
+    ax_dt.plot(roll2, linewidth=2, color='g', label='Front and back control')
+    # ax_dt.plot(roll3, linewidth=2, color='y', label='Schedule based')
     ax_dt.set_title('Moving average passenger delay over 10 minutes')
     ax_dt.set_xlabel('Time [hours]')
     ax_dt.set_ylabel('Delay [s]')
@@ -57,15 +75,14 @@ def waiting_time():
 
 def bunching_coef():
     control = load_json('bunching_coef_control', 'bunching_coef')
-    dubble_control = load_json('bunching_coef_dubblecontrol', 'bunching_coef')
-    no_control = load_json('bunching_coef_nocontrol', 'bunching_coef')
+    dubble_control = load_json('bunching_coef_doublecontrol', 'bunching_coef')
+    no_control = load_json('no_control/bunching_coef_nocontrol1', 'bunching_coef')
 
     fig = plt.figure('Bunching levels')
     ax_b = fig.add_subplot()
-    ax_b.plot(np.linspace(0,8*3600, len(control))/3600, control, linewidth=2, color='skyblue', label='Control')
-    ax_b.plot(np.linspace(0,8*3600, len(dubble_control))/3600, dubble_control, linewidth=2, color='g', label='Double Control')
-    ax_b.plot(np.linspace(0,8*3600, len(no_control))/3600, no_control, linewidth=2, color='red', label='No Control')
-    ax_b.plot()
+    ax_b.plot(np.linspace(0, 8, len(control)), control, linewidth=2, color='skyblue', label='Control')
+    ax_b.plot(np.linspace(0, 8, len(dubble_control)), dubble_control, linewidth=2, color='mediumaquamarine', label='Double Control')
+    ax_b.plot(np.linspace(0, 8, len(no_control)), no_control, linewidth=2, color='red', label='No Control')
     ax_b.set_title('Bunching levels, sampled every 10 min')
     ax_b.set_xlabel('Time [h]')
     ax_b.set_ylabel('Variance in distances between buses')
@@ -74,16 +91,22 @@ def bunching_coef():
 
 def var_passengers():
     control = load_json('var_passengers_control', 'var_passengers')
-    dubble_control = load_json('var_passengers_dubblecontrol', 'var_passengers')
-    no_control = load_json('var_passengers_nocontrol', 'var_passengers')
-    plt.plot(np.linspace(0,8*3600, len(control)), control, linewidth=2, color='skyblue')
-    plt.plot(np.linspace(0,8*3600, len(dubble_control)), dubble_control, linewidth=2, color='g')
-    plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='r')
+    dubble_control = load_json('var_passengers_doublecontrol', 'var_passengers')
+    no_control = load_json('no_control/var_passengers_nocontrol', 'var_passengers')
+    fig = plt.figure('Passenger variance')
+    ax_vp = fig.add_subplot()
+    ax_vp.plot(np.linspace(0, 8, len(control)), control, linewidth=2, color='skyblue')
+    ax_vp.plot(np.linspace(0, 8, len(dubble_control)), dubble_control, linewidth=2, color='g')
+    ax_vp.plot(np.linspace(0, 8, len(no_control)), no_control, linewidth=2, color='r')
+    ax_vp.set_xlabel('Time [h]')
+    ax_vp.set_ylabel('Variance in passengers on buses')
+    ax_vp.set_title('Passenger variance')
+    ax_vp.legend()
 
 
 def waiting_passengers():
     control = load_json('waiting_passengers_control', 'waiting_passengers')
-    dubble_control = load_json('waiting_passengers_dubblecontrol', 'waiting_passengers')
+    double_control = load_json('waiting_passengers_doublecontrol', 'waiting_passengers')
     no_control = load_json('waiting_passengers_nocontrol', 'waiting_passengers')
     fig = plt.figure("Waiting passengers")
     ax_wp = fig.add_subplot()
@@ -96,8 +119,9 @@ def waiting_passengers():
 
 def main():
     delay_time()
-    bunching_coef()
-    waiting_passengers()
+    # bunching_coef()
+    # waiting_passengers()
+    # var_passengers()
 
 
 if __name__ == '__main__':

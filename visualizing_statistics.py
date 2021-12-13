@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+plt.style.use('seaborn')
 import json
 import numpy as np
 import pandas as pd
@@ -50,19 +51,26 @@ def waiting_time():
 
 
 def bunching_coef():
-    control = load_json('bunching_coef', 'bunching_coef')
+    control = load_json('bunching_coef_control', 'bunching_coef')
+    dubble_control = load_json('bunching_coef_dubblecontrol', 'bunching_coef')
     no_control = load_json('bunching_coef_nocontrol', 'bunching_coef')
     plt.plot(np.linspace(0,8*3600, len(control)), control, linewidth=2, color='skyblue')
+    plt.plot(np.linspace(0,8*3600, len(dubble_control)), dubble_control, linewidth=2, color='g')
     plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='red')
 
 
 def var_passengers():
-    data = load_json('var_passengers', 'var_passengers')
-    plt.plot(np.linspace(0,8*3600, len(data)), data, linewidth=2, color='skyblue')
+    control = load_json('var_passengers_control', 'var_passengers')
+    dubble_control = load_json('var_passengers_dubblecontrol', 'var_passengers')
+    no_control = load_json('var_passengers_nocontrol', 'var_passengers')
+    plt.plot(np.linspace(0,8*3600, len(control)), control, linewidth=2, color='skyblue')
+    plt.plot(np.linspace(0,8*3600, len(dubble_control)), dubble_control, linewidth=2, color='g')
+    plt.plot(np.linspace(0,8*3600, len(no_control)), no_control, linewidth=2, color='r')
 
 
 def waiting_passengers():
-    control = load_json('waiting_passengers', 'waiting_passengers')
+    control = load_json('waiting_passengers_control', 'waiting_passengers')
+    dubble_control = load_json('waiting_passengers_dubblecontrol', 'waiting_passengers')
     no_control = load_json('waiting_passengers_nocontrol', 'waiting_passengers')
     fig = plt.figure("Waiting passengers")
     ax_wp = fig.add_subplot()

@@ -27,15 +27,15 @@ def write_json(i, delay_time, waiting_time, bunching_coef, var_buss_passengers, 
     bunching_coef_dict = {'bunching_coef': bunching_coef}
     var_buss_passengers_dict = {'var_passengers': var_buss_passengers}
     n_waiting_passengers_dict = {'waiting_passengers': n_waiting_passengers}
-    with open(f'data/front/delay_times_front{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/front_back/delay_times_front_back{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(delay_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front/waiting_times_front{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/front_back/waiting_times_front_back{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(waiting_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front/bunching_coef_front{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/front_back/bunching_coef_front_back{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(bunching_coef_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front/var_passengers_front{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/front_back/var_passengers_front_back{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(var_buss_passengers_dict, json_file, ensure_ascii=False, indent=4)
-    with open(f'data/front/waiting_passengers_front{i}.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/front_back/waiting_passengers_front_back{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
 
@@ -98,15 +98,15 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
                     dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
                     dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
-                    if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
+                    #if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
+                    #    pass
+                    #else:
+                    #    current_bus.boarding_complete()
+
+                    if dist_infront < dist_behind and control:
                         pass
                     else:
                         current_bus.boarding_complete()
-
-                    # if dist_infront < dist_behind and control:
-                    #     pass
-                    # else:
-                    #     current_bus.boarding_complete()
 
                     #current_bus.late_or_not(t)
                     #if current_bus.late:
@@ -122,7 +122,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
                 window.move_bus(bus_idx, current_bus.position)
                 window.move_staple()
 
-        plt.pause(0.001)
+        plt.pause(0.00001)
     return delay_time, waiting_time, bunching_coef, var_buss_passengers, n_waiting_passengers
 
 

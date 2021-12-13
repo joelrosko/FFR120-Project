@@ -42,7 +42,7 @@ class Window:
             self.ax.add_patch(self.stop_staple[-1])
             self.ax.add_patch(self.stops[-1])
             p += 1
-        #self.ax.set_title('0h 0min', backgoundcolor='k', color='w')
+        self.ax.set_title('0h 0min', color='w', backgroundcolor='k')
     
     def add_bus(self, start_angle):
         x = self.x0 + self.r*np.cos(start_angle)
@@ -70,7 +70,7 @@ class Window:
     def change_time(self, t):
         hours = np.floor(t/3600)
         minutes = np.floor((t-hours*3600)/60)
-        self.ax.set_title(f'{int(hours)}h {int(minutes)}min')
+        self.ax.set_title(f'{int(hours)}h {int(minutes)}min', fontsize='xx-large')
 
     def change_color(self, free_seats, bus_idx):
         if free_seats == 0:

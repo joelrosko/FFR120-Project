@@ -106,19 +106,19 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     #else:
                     #    current_bus.boarding_complete()
 
-                    #if dist_infront < dist_behind and control:
-                    #    pass
-                    #else:
-                    #    current_bus.boarding_complete()
-
-                    current_bus.late_or_not(t)
-                    if current_bus.late:
-                        if current_bus.first_time:
-                            current_bus.time_to_next_stop += t
-                            current_bus.first_time = False
-                        current_bus.boarding_complete()
-                    else:
+                    if dist_infront < dist_behind and control:
                         pass
+                    else:
+                        current_bus.boarding_complete()
+
+                    #current_bus.late_or_not(t)
+                    #if current_bus.late:
+                    #    if current_bus.first_time:
+                    #        current_bus.time_to_next_stop += t
+                    #        current_bus.first_time = False
+                    #    current_bus.boarding_complete()
+                    #else:
+                    #    pass
 
             else:
                 current_bus.move_bus()
@@ -131,21 +131,19 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
 
 def main():
-    for run in range(1, n_runs+1):
-        print(f'Run nr {run}')
-        travel_times = load_json()
-        bstoplist = initialize_stops.initialize_stoplist()
-        window = Window(bstoplist)
-        buses = []
-        bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
-        for pos in bus_pos:
-            buses.append(Bus(bstoplist, pos))
+    travel_times = load_json()
+    bstoplist = initialize_stops.initialize_stoplist()
+    window = Window(bstoplist)
+    buses = []
+    bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
+    for pos in bus_pos:
+        buses.append(Bus(bstoplist, pos))
 
-        for bus in buses:
-            window.add_bus(bus.position)
+    for bus in buses:
+        window.add_bus(bus.position)
 
-        delay_time, waiting_time, bunching_coef, var_buss_passengers, n_waiting_passengers = simulation(bstoplist, buses, window, travel_times, control=True)
-        write_json(run, delay_time, waiting_time, bunching_coef, var_buss_passengers, n_waiting_passengers)
+    delay_time, waiting_time, bunching_coef, var_buss_passengers, n_waiting_passengers = simulation(bstoplist, buses, window, travel_times, control=True)
+    #write_json(run, delay_time, waiting_time, bunching_coef, var_buss_passengers, n_waiting_passengers)
 
 if __name__ == '__main__':
     main()

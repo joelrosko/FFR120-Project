@@ -78,6 +78,9 @@ def simulation(bstoplist, buses, window, travel_times, control):
             print(f'Max {np.max(np.array(delay_time)[:,0])/60}, min {np.min(np.array(delay_time)[:,0])/60}')
             # print(f'Delays: {np.array(delay_time)[:,0]/60}')
             print(f'People waiting: {people_waiting}')
+        if t % 60:
+            window.change_time(t)
+
         for n_stop, bus_stop in enumerate(bstoplist):
             bus_stop.create_passenger(t, travel_times)
             window.add_passengers(n_stop, len(bus_stop.waiting_list))
@@ -122,6 +125,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
                 window.move_staple()
+                window.change_color(current_bus.n_free_seats(), bus_idx)
 
         plt.pause(0.001)
 

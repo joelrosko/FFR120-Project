@@ -9,6 +9,11 @@ def load_json(filename, field):
 
     return data[field]
 
+def create_fig(title):
+    fig, ax = plt.subplots(1,1)
+    fig.suptitle(title)
+    return fig, ax
+
 def delay_time():
     data = load_json('delay_times', 'delay_times')
     moving_average = np.convolve(data, np.ones(500), 'valid') / 500

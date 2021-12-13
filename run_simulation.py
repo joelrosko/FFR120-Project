@@ -77,6 +77,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
         for bus_idx, current_bus in enumerate(buses):
 
+
             at_stop, stop_idx = current_bus.bus_at_stop()
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
@@ -89,18 +90,27 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
 
-                    dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
-                    dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
+                    # dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
+                    # dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
                     # if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
                     #     pass
                     # else:
                     #     current_bus.boarding_complete()
 
-                  #  if control:
-                    if dist_infront < dist_behind and control:
-                        pass
-                    else:
+                    # if dist_infront < dist_behind and control:
+                    #     pass
+                    # else:
+                    #     current_bus.boarding_complete()
+
+                    current_bus.late_or_not(t)
+                    if current_bus.late:
+                        if current_bus.first_time:
+                            current_bus.time_to_next_stop += t
+                            current_bus.first_time = False
                         current_bus.boarding_complete()
+                    else:
+                        pass
+
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
@@ -120,7 +130,7 @@ def main():
     for bus in buses:
         window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times, control=False)
+    simulation(bstoplist, buses, window, travel_times, control=True)
     write_json()
 
 if __name__ == '__main__':

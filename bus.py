@@ -1,10 +1,12 @@
 import numpy as np
-from initialize_stops import initialize_stoplist
+from initialize_stops import initialize_stoplist, load_json
 from bus_stop import BusStop
+import json
+
+
 
 
 class Bus:
-    # STOP_POSITIONS = np.array([0.0, 0.06544985, 0.39269908, 0.65449847, 0.85084801, 0.91629786, 0.9817477, 1.1126474, 1.24354709, 1.30899694, 1.50534648, 1.63624617, 1.89804556, 2.0943951, 2.15984495, 2.29074464, 2.35619449, 2.55254403, 2.74889357, 2.81434342, 2.94524311, 3.14159265, 3.27249235, 3.33794219, 3.53429174, 3.73064128, 3.79609112, 3.92699082, 3.99244066, 4.1887902, 4.45058959, 4.58148929, 4.77783883, 4.84328867, 4.97418837, 5.10508806, 5.17053791, 5.23598776, 5.4323373, 5.69413668, 6.02138592, 6.08683577])
 
     def __init__(self, stops, start_pos, n_passengers=0):
         self.angular_velocity = 0.001315789473684   # 360/(38min*2*3600s) = 360/273600 {old = 0.001090277777777778}
@@ -16,10 +18,17 @@ class Bus:
         self.stops = stops
         self.stop_position = np.array([self.stops[i].position for i in range(len(self.stops))])
         self.next_stop = np.where(start_pos < self.stop_position)[0][0]
-        self.previous_stop = 0
+        self.previous_stop = self.next_stop - 1
+        self.time_to_next_stop = 0
+        self.times = load_json('data/travel_time.json')
+        self.times = self.times["times"]
+        self.times.extend(self.times[::-1])
+        self.times = list(np.array(self.times)*60)
+        self.late = False
+        self.first_time = True
 
     def bus_at_stop(self):
-        if (np.abs(self.stop_position[self.next_stop] - self.position)) <= (self.angular_velocity):
+        if (np.abs(self.stop_position[self.next_stop] - self.position)) <= self.angular_velocity:
             self.previous_stop = self.next_stop
             self.at_stop = True
         else:
@@ -32,6 +41,9 @@ class Bus:
         self.next_stop += 1
         self.next_stop = self.next_stop % len(self.stop_position)
 
+        self.time_to_next_stop += self.times[self.next_stop-1]
+
+
     def move_bus(self):
         if not self.at_stop:
             self.position += self.angular_velocity
@@ -41,6 +53,11 @@ class Bus:
         self.position += self.angular_velocity/2
         self.position = self.position % (2*np.pi)
 
+    def late_or_not(self, t):
+        if t >= self.time_to_next_stop:
+            self.late = True
+        else:
+            self.late = False
 
     def n_free_seats(self):
         return self.max_passengers - self.n_passengers

@@ -16,8 +16,10 @@ bunching_coef = []  # Variance in distance between buses
 var_buss_passengers = []
 n_waiting_passengers = []
 
+
 def dist(b1,b2):
     return np.abs(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
+
 
 def load_json():
     with open('data/travel_time.json', 'r') as json_file:
@@ -42,13 +44,16 @@ def write_json(i):
     with open(f'data/no_control/waiting_passengers_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
+
 def get_var_passenger(buses):
     n_passengers = [bus.n_passengers for bus in buses]
     return np.var(n_passengers)
 
+
 def get_waiting_passenger(bstoplist):
     waiting_passengers = [len(stop.waiting_list) for stop in bstoplist]
     return sum(waiting_passengers)
+
 
 def get_bunching_coef(buses):
     dist = []
@@ -57,6 +62,7 @@ def get_bunching_coef(buses):
         b2 = buses[(i+1) % n_buses].position
         dist.append(math.atan2(np.sin(b1-b2), np.cos(b1-b2)))
     return np.var(dist)
+
 
 def simulation(bstoplist, buses, window, travel_times, control):
     for t in range(8*3600):
@@ -78,6 +84,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
         for bus_idx, current_bus in enumerate(buses):
 
+
             at_stop, stop_idx = current_bus.bus_at_stop()
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
@@ -90,24 +97,34 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
 
-                    dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
-                    dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
+                    # dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
+                    # dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
                     # if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
                     #     pass
                     # else:
                     #     current_bus.boarding_complete()
 
-                  #  if control:
-                    if dist_infront < dist_behind and control:
-                        pass
-                    else:
+                    # if dist_infront < dist_behind and control:
+                    #     pass
+                    # else:
+                    #     current_bus.boarding_complete()
+
+                    current_bus.late_or_not(t)
+                    if current_bus.late:
+                        if current_bus.first_time:
+                            current_bus.time_to_next_stop += t
+                            current_bus.first_time = False
                         current_bus.boarding_complete()
+                    else:
+                        pass
+
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
                 window.move_staple()
 
         plt.pause(0.001)
+
 
 def main():
     for run in range(1, n_runs+1):

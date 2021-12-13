@@ -31,7 +31,6 @@ class Passenger:
     def __repr__(self):
         return f'From bus stop "{self.start_index}" to "{self.end_index}"\n'
 
-
     def get_times(self):
         return f'Start time: {self.start_time} ts\n' \
                f'Waiting time: {self.waiting_time} ts\n' \

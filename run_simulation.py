@@ -8,6 +8,7 @@ import initialize_stops
 from simulation_window import Window
 from bus import Bus
 
+n_runs = 10
 n_buses = 20
 delay_time = []
 waiting_time = []
@@ -26,22 +27,21 @@ def load_json():
 
     return tmp_travel_times['times']
 
-
-def write_json():
+def write_json(i):
     delay_time_dict = {'delay_times': delay_time}
     waiting_time_dict = {'waiting_times': waiting_time}
     bunching_coef_dict = {'bunching_coef': bunching_coef}
     var_buss_passengers_dict = {'var_passengers': var_buss_passengers}
     n_waiting_passengers_dict = {'waiting_passengers': n_waiting_passengers}
-    with open('data/delay_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/delay_times_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(delay_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_times_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/waiting_times_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(waiting_time_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/bunching_coef_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/bunching_coef_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(bunching_coef_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/var_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/var_passengers_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(var_buss_passengers_dict, json_file, ensure_ascii=False, indent=4)
-    with open('data/waiting_passengers_nocontrol.json', 'w', encoding='utf-8') as json_file:
+    with open(f'data/no_control/waiting_passengers_nocontrol{i}.json', 'w', encoding='utf-8') as json_file:
         json.dump(n_waiting_passengers_dict, json_file, ensure_ascii=False, indent=4)
 
 
@@ -84,6 +84,7 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
         for bus_idx, current_bus in enumerate(buses):
 
+
             at_stop, stop_idx = current_bus.bus_at_stop()
             if at_stop:
                 passenger_end_idx = [passenger.end_index for passenger in current_bus.passenger_list]
@@ -96,18 +97,27 @@ def simulation(bstoplist, buses, window, travel_times, control):
                     current_bus.add_passenger(bstoplist[stop_idx], t)
                 else:
 
-                    dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
-                    dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
+                    # dist_infront = dist(current_bus.position, buses[(bus_idx + 1) % n_buses].position)
+                    # dist_behind = dist(current_bus.position, buses[bus_idx - 1].position)
                     # if (dist_infront <= ((2*np.pi)/n_buses)*0.75) and control:
                     #     pass
                     # else:
                     #     current_bus.boarding_complete()
 
-                  #  if control:
-                    if dist_infront < dist_behind and control:
-                        pass
-                    else:
+                    # if dist_infront < dist_behind and control:
+                    #     pass
+                    # else:
+                    #     current_bus.boarding_complete()
+
+                    current_bus.late_or_not(t)
+                    if current_bus.late:
+                        if current_bus.first_time:
+                            current_bus.time_to_next_stop += t
+                            current_bus.first_time = False
                         current_bus.boarding_complete()
+                    else:
+                        pass
+
             else:
                 current_bus.move_bus()
                 window.move_bus(bus_idx, current_bus.position)
@@ -117,20 +127,20 @@ def simulation(bstoplist, buses, window, travel_times, control):
 
 
 def main():
-    travel_times = load_json()
-    bstoplist = initialize_stops.initialize_stoplist()
-    window = Window(bstoplist)
-    buses = []
-    bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
-    for pos in bus_pos:
-        buses.append(Bus(bstoplist, pos))
+    for run in range(1, n_runs+1):
+        travel_times = load_json()
+        bstoplist = initialize_stops.initialize_stoplist()
+        window = Window(bstoplist)
+        buses = []
+        bus_pos = np.linspace(0, 2*np.pi, n_buses, endpoint=False)
+        for pos in bus_pos:
+            buses.append(Bus(bstoplist, pos))
 
-    for bus in buses:
-        window.add_bus(bus.position)
+        for bus in buses:
+            window.add_bus(bus.position)
 
-    simulation(bstoplist, buses, window, travel_times, control=False)
-    write_json()
-
+        simulation(bstoplist, buses, window, travel_times, control=False)
+        write_json(run)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,6 @@
 # FFR120
 
-Passengers reaching delay times of up to 3.5h is not uncommon, this is not unreal. Bunching is a serious problem and extensive measures needs to be taken.
+Passengers reaching delay times of up to 3.5h is not uncommon, this is not unreal. Bunching is a serious problem and extensive measures needs to be taken. * SEE PROOF BELOW *
 
 ### Project plan
 - Project scheme &check;

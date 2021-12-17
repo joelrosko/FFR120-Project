@@ -4,7 +4,7 @@ Passengers reaching delay times of up to 3.5h is not uncommon, this is not unrea
 
 ### Project plan
 - Project scheme &check;
-- Git start up :) &check;
+- Git start up :) &check; &check;
 - Assigned classes &check; &check; 
 - Report 
 
